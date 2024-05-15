@@ -1,0 +1,45 @@
+section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 50em;
+}
+
+section > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  border-style: solid;
+  border-color: black;
+  width: 20em;
+  height: 30em;
+  gap: 2em;
+}
+
+div > div > div {
+  display: flex;
+  justify-content: space-evenly;
+  gap: 1em;
+}
+
+button {
+  padding: 0.8em;
+}
+
+output {
+  border-style: solid;
+  border-color: black;
+  width: 11em;
+  height: 2em;
+  text-align: center;
+}
+
+div > div > div:nth-of-type(1),
+div > div > div:nth-of-type(2),
+div > div > div:nth-of-type(3),
+div > div > div:nth-of-type(4),
+div > div > div:nth-of-type(5) {
+  margin-bottom: 1em;
+}

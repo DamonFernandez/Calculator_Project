@@ -54,4 +54,23 @@ let executeCalc = (string) => {
   // Addition and subtraction check
 };
 
-executeCalc(getCalcString);
+let renderCalcOutput = () => {
+  let output = executeCalc(getCalcString);
+  calcOutputWindow.textContent = output;
+};
+
+let renderCalcString = () => {
+  calcOutputWindow.textContent = calcString;
+};
+
+console.log(document.getElementById("addButton"));
+document.getElementById("addButton").addEventListener("click", () => {
+  calcString += " + ";
+  renderCalcString();
+});
+
+// Global:
+
+let calcArray = [];
+let calcString = "";
+let calcOutputWindow = document.getElementsByTagName("output")[0];
