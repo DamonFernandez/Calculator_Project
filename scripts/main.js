@@ -63,14 +63,296 @@ let renderCalcString = () => {
   calcOutputWindow.textContent = calcString;
 };
 
-console.log(document.getElementById("addButton"));
-document.getElementById("addButton").addEventListener("click", () => {
-  calcString += " + ";
-  renderCalcString();
-});
+let currentArrayIndexIsOperator = () => {
+  if (
+    calcArray[calcArrayIndex] == "+" ||
+    calcArray[calcArrayIndex] == "-" ||
+    calcArray[calcArrayIndex] == "/" ||
+    calcArray[calcArrayIndex] == "*" ||
+    calcArray[calcArrayIndex] == "^" ||
+    calcArray[calcArrayIndex] == "√"
+  ) {
+    return true;
+  }
+  return false;
+};
+
+let addEventHandlers = () => {
+  document.getElementById("addButton").addEventListener("click", () => {
+    if (
+      (calcArrayIndex != 0 ||
+        typeof calcArray[calcArrayIndex] != "undefined") &&
+      !currentArrayIndexIsOperator()
+    ) {
+      calcString += " + ";
+      renderCalcString();
+      calcArrayIndex++;
+      calcArray[calcArrayIndex] = "+";
+    }
+  });
+
+  document.getElementById("subtractButton").addEventListener("click", () => {
+    if (
+      (calcArrayIndex != 0 ||
+        typeof calcArray[calcArrayIndex] != "undefined") &&
+      !currentArrayIndexIsOperator()
+    ) {
+      calcString += " - ";
+      renderCalcString();
+      calcArrayIndex++;
+      calcArray[calcArrayIndex] = "-";
+    }
+  });
+
+  document.getElementById("multiplyButton").addEventListener("click", () => {
+    if (
+      (calcArrayIndex != 0 ||
+        typeof calcArray[calcArrayIndex] != "undefined") &&
+      !currentArrayIndexIsOperator()
+    ) {
+      calcString += " * ";
+      renderCalcString();
+      calcArrayIndex++;
+      calcArray[calcArrayIndex] = "*";
+    }
+  });
+
+  document.getElementById("divideButton").addEventListener("click", () => {
+    if (
+      (calcArrayIndex != 0 ||
+        typeof calcArray[calcArrayIndex] != "undefined") &&
+      !currentArrayIndexIsOperator()
+    ) {
+      calcString += " / ";
+      renderCalcString();
+      calcArrayIndex++;
+      calcArray[calcArrayIndex] = "/";
+    }
+  });
+
+  document.getElementById("exponentButton").addEventListener("click", () => {
+    if (
+      (calcArrayIndex != 0 ||
+        typeof calcArray[calcArrayIndex] != "undefined") &&
+      !currentArrayIndexIsOperator()
+    ) {
+      calcString += " ^ ";
+      renderCalcString();
+      calcArrayIndex++;
+      calcArray[calcArrayIndex] = "^";
+    }
+  });
+
+  document.getElementById("squareRootButton").addEventListener("click", () => {
+    if (
+      (calcArrayIndex != 0 ||
+        typeof calcArray[calcArrayIndex] != "undefined") &&
+      !currentArrayIndexIsOperator()
+    ) {
+      calcString += " √ ";
+      renderCalcString();
+      calcArrayIndex++;
+      calcArray[calcArrayIndex] = "√";
+    }
+  });
+
+  document.getElementById("zeroButton").addEventListener("click", () => {
+    if (currentArrayIndexIsOperator()) {
+      calcArrayIndex++;
+    }
+
+    if (typeof calcArray[calcArrayIndex] == "undefined") {
+      calcArray[calcArrayIndex] = "";
+    }
+    if (
+      calcArray[calcArrayIndex] == "" ||
+      !calcArray[calcArrayIndex].startsWith("0")
+    ) {
+      calcString += "0";
+      renderCalcString();
+      calcArray[calcArrayIndex] += "0";
+    }
+  });
+
+  document.getElementById("oneButton").addEventListener("click", () => {
+    if (currentArrayIndexIsOperator()) {
+      calcArrayIndex++;
+    }
+
+    if (typeof calcArray[calcArrayIndex] == "undefined") {
+      calcArray[calcArrayIndex] = "";
+    }
+
+    if (
+      calcArray[calcArrayIndex] == "" ||
+      !calcArray[calcArrayIndex].startsWith("0")
+    ) {
+      calcString += "1";
+      renderCalcString();
+      calcArray[calcArrayIndex] += "1";
+    }
+  });
+
+  document.getElementById("twoButton").addEventListener("click", () => {
+    if (currentArrayIndexIsOperator()) {
+      calcArrayIndex++;
+    }
+
+    if (typeof calcArray[calcArrayIndex] == "undefined") {
+      calcArray[calcArrayIndex] = "";
+    }
+
+    if (
+      calcArray[calcArrayIndex] == "" ||
+      !calcArray[calcArrayIndex].startsWith("0")
+    ) {
+      calcString += "2";
+      renderCalcString();
+      calcArray[calcArrayIndex] += "2";
+    }
+  });
+
+  document.getElementById("threeButton").addEventListener("click", () => {
+    if (currentArrayIndexIsOperator()) {
+      calcArrayIndex++;
+    }
+
+    if (typeof calcArray[calcArrayIndex] == "undefined") {
+      calcArray[calcArrayIndex] = "";
+    }
+
+    if (
+      calcArray[calcArrayIndex] == "" ||
+      !calcArray[calcArrayIndex].startsWith("0")
+    ) {
+      calcString += "3";
+      renderCalcString();
+      calcArray[calcArrayIndex] += "3";
+    }
+  });
+
+  document.getElementById("fourButton").addEventListener("click", () => {
+    if (currentArrayIndexIsOperator()) {
+      calcArrayIndex++;
+    }
+
+    if (typeof calcArray[calcArrayIndex] == "undefined") {
+      calcArray[calcArrayIndex] = "";
+    }
+
+    if (
+      calcArray[calcArrayIndex] == "" ||
+      !calcArray[calcArrayIndex].startsWith("0")
+    ) {
+      calcString += "4";
+      renderCalcString();
+      calcArray[calcArrayIndex] += "4";
+    }
+  });
+
+  document.getElementById("fiveButton").addEventListener("click", () => {
+    if (currentArrayIndexIsOperator()) {
+      calcArrayIndex++;
+    }
+
+    if (typeof calcArray[calcArrayIndex] == "undefined") {
+      calcArray[calcArrayIndex] = "";
+    }
+
+    if (
+      calcArray[calcArrayIndex] == "" ||
+      !calcArray[calcArrayIndex].startsWith("0")
+    ) {
+      calcString += "5";
+      renderCalcString();
+      calcArray[calcArrayIndex] += "5";
+    }
+  });
+
+  document.getElementById("sixButton").addEventListener("click", () => {
+    if (currentArrayIndexIsOperator()) {
+      calcArrayIndex++;
+    }
+
+    if (typeof calcArray[calcArrayIndex] == "undefined") {
+      calcArray[calcArrayIndex] = "";
+    }
+
+    if (
+      calcArray[calcArrayIndex] == "" ||
+      !calcArray[calcArrayIndex].startsWith("0")
+    ) {
+      calcString += "6";
+      renderCalcString();
+      calcArray[calcArrayIndex] += "6";
+    }
+  });
+
+  document.getElementById("sevenButton").addEventListener("click", () => {
+    if (currentArrayIndexIsOperator()) {
+      calcArrayIndex++;
+    }
+
+    if (typeof calcArray[calcArrayIndex] == "undefined") {
+      calcArray[calcArrayIndex] = "";
+    }
+
+    if (
+      calcArray[calcArrayIndex] == "" ||
+      !calcArray[calcArrayIndex].startsWith("0")
+    ) {
+      calcString += "7";
+      renderCalcString();
+      calcArray[calcArrayIndex] += "7";
+    }
+  });
+
+  document.getElementById("eightButton").addEventListener("click", () => {
+    if (currentArrayIndexIsOperator()) {
+      calcArrayIndex++;
+    }
+
+    if (typeof calcArray[calcArrayIndex] == "undefined") {
+      calcArray[calcArrayIndex] = "";
+    }
+
+    if (
+      calcArray[calcArrayIndex] == "" ||
+      !calcArray[calcArrayIndex].startsWith("0")
+    ) {
+      calcString += "8";
+      renderCalcString();
+      calcArray[calcArrayIndex] += "8";
+    }
+  });
+
+  document.getElementById("nineButton").addEventListener("click", () => {
+    if (currentArrayIndexIsOperator()) {
+      calcArrayIndex++;
+    }
+
+    if (typeof calcArray[calcArrayIndex] == "undefined") {
+      calcArray[calcArrayIndex] = "";
+    }
+
+    if (
+      calcArray[calcArrayIndex] == "" ||
+      !calcArray[calcArrayIndex].startsWith("0")
+    ) {
+      calcString += "9";
+      renderCalcString();
+      calcArray[calcArrayIndex] += "9";
+    }
+  });
+};
 
 // Global:
 
+//Global Vars:
+
 let calcArray = [];
+let calcArrayIndex = 0;
 let calcString = "";
 let calcOutputWindow = document.getElementsByTagName("output")[0];
+
+addEventHandlers();
