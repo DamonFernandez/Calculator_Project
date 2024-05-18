@@ -110,7 +110,6 @@ let currentArrayIndexIsOperator = (index) => {
 };
 
 let addEventHandlerToOperationButton = (buttonId, symbol) => {
-  displayingOutput ? clearCalcString() : null;
   document.getElementById(buttonId).addEventListener("click", () => {
     if (
       (calcArrayIndex != 0 ||
@@ -126,7 +125,7 @@ let addEventHandlerToOperationButton = (buttonId, symbol) => {
 };
 
 let addEventHandlerToNumberButton = (buttonId, symbol) => {
-  displayingOutput ? clearCalcString() : null;
+  // displayingOutput ? clearCalcString() : null;
   document.getElementById(buttonId).addEventListener("click", () => {
     if (currentArrayIndexIsOperator(calcArrayIndex)) {
       calcArrayIndex++;
@@ -179,6 +178,7 @@ let calcArray = [];
 let calcArrayIndex = 0;
 let calcString = "";
 let calcOutputWindow = document.getElementsByTagName("output")[0];
-let displayingOutput = false;
 
 addEventHandlers();
+
+// Bug: cant handle multiple operators yet
