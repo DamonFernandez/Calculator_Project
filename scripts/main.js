@@ -31,7 +31,7 @@ let getCalcString = () => {
 
 let convertCalcArrayToNumbers = () => {
   for (let i = 0; i < calcArray.length; i++) {
-    if (!currentArrayIndexIsOperator) {
+    if (!currentArrayIndexIsOperator(i)) {
       calcArray[i] = Number(calcArray[i]);
     }
   }
@@ -49,7 +49,7 @@ let bedmasLayerExecute = (symbolOneToCheckFor, symbolTwoToCheckFor) => {
           calcArray[i - 1],
           calcArray[i + 1]
         );
-        rebuildCalcArray(i, resultOfOperation);
+        rebuildCalcArray(calcArray[i], resultOfOperation);
       }
     }
   } else if (symbolTwoToCheckFor == "√" || symbolOneToCheckFor == "√") {
@@ -63,7 +63,7 @@ let bedmasLayerExecute = (symbolOneToCheckFor, symbolTwoToCheckFor) => {
         rebuildCalcArray(i, valueToAdd);
       } else if (calcArray[i] == "√") {
         resultOfOperation = performOperation(i, calcArray[i + 1]);
-        rebuildCalcArray(i, resultOfOperation);
+        rebuildCalcArray(calcArray[i], resultOfOperation);
       }
     }
   }
@@ -85,7 +85,7 @@ let executeCalc = () => {
   bedmasLayerExecute("+", "-");
 
   calcString = calcArray.toString();
-  renderCalcString;
+  renderCalcString();
 };
 let renderCalcOutput = () => {
   let output = executeCalc(getCalcString);
