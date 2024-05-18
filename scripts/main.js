@@ -30,6 +30,29 @@ let divide = (...numbers) => {
   return quotient;
 };
 
+let performOperation = (operationType, operandOne = 0, operandTwo = 0) => {
+  switch (operationType) {
+    case "+":
+      return operandOne + operandTwo;
+    case "-":
+      return operandOne - operandTwo;
+    case "*":
+      return operandOne * operandTwo;
+    case "/":
+      return operandOne / operandTwo;
+    case "^":
+      return operandOne ** operandTwo;
+    case "√":
+      return Math.sqrt(operandOne);
+    default:
+      console.log("Invalid Operation Type");
+      return "Invalid Operation Type";
+  }
+};
+
+let rebuildCalcArray = (index, valueToAdd) => {
+  calcArray.splice(index, 3, valueToAdd);
+};
 // So the way to do this is have 1 big algorithm go over the calcString and execute operations as needed,
 // but the challenge is making it efficent and following order of operations
 
@@ -38,22 +61,64 @@ let getCalcString = () => {
   return calcString;
 };
 
-let executeCalc = (string) => {
-  // So we just do this in layers like how a human would
-
-  // bracket check
-
-  // Square root and exponents check
-  for (let i = 0; i < calcString.length; i++) {
-    if (calcString[i]) {
+let convertCalcArrayToNumbers = () => {
+  for (let i = 0; i < calcArray.length; i++) {
+    if (!currentArrayIndexIsOperator) {
+      calcArray[i] = Number(calcArray[i]);
     }
   }
-
-  // Multiplication and division check
-
-  // Addition and subtraction check
 };
 
+let bedmasLayerExecute = (symbolOneToCheckFor, symbolTwoToCheckFor) => {
+  if (symbolTwoToCheckFor != "√" && symbolOneToCheckFor != "√") {
+    for (let i = 0; i < calcArray.length; i++) {
+      if (
+        calcArray[i] == symbolOneToCheckFor ||
+        calcArray[i] == symbolTwoToCheckFor
+      ) {
+        resultOfOperation = performOperation(
+          calcArray[i],
+          calcArray[i - 1],
+          calcArray[i + 1]
+        );
+        rebuildCalcArray(i, resultOfOperation);
+      }
+    }
+  } else if (symbolTwoToCheckFor == "√" || symbolOneToCheckFor == "√") {
+    for (let i = 0; i < calcArray.length; i++) {
+      if (calcArray[i] == "^") {
+        resultOfOperation = performOperation(
+          calcArray[i],
+          calcArray[i - 1],
+          calcArray[i + 1]
+        );
+        rebuildCalcArray(i, valueToAdd);
+      } else if (calcArray[i] == "√") {
+        resultOfOperation = performOperation(i, calcArray[i + 1]);
+        rebuildCalcArray(i, resultOfOperation);
+      }
+    }
+  }
+};
+
+let executeCalc = () => {
+  let resultOfOperation = 0;
+  // So we just do this in layers like how a human would
+
+  convertCalcArrayToNumbers();
+
+  // Square root and exponents check
+  bedmasLayerExecute("√", "^");
+
+  // Multiplication and division check
+  bedmasLayerExecute("*", "/");
+
+  // Addition and subtraction check
+  bedmasLayerExecute("+", "-");
+
+  calcString = calcArray.toString();
+  renderCalcString;
+};
 let renderCalcOutput = () => {
   let output = executeCalc(getCalcString);
   calcOutputWindow.textContent = output;
@@ -63,14 +128,14 @@ let renderCalcString = () => {
   calcOutputWindow.textContent = calcString;
 };
 
-let currentArrayIndexIsOperator = () => {
+let currentArrayIndexIsOperator = (index) => {
   if (
-    calcArray[calcArrayIndex] == "+" ||
-    calcArray[calcArrayIndex] == "-" ||
-    calcArray[calcArrayIndex] == "/" ||
-    calcArray[calcArrayIndex] == "*" ||
-    calcArray[calcArrayIndex] == "^" ||
-    calcArray[calcArrayIndex] == "√"
+    calcArray[index] == "+" ||
+    calcArray[index] == "-" ||
+    calcArray[index] == "/" ||
+    calcArray[index] == "*" ||
+    calcArray[index] == "^" ||
+    calcArray[index] == "√"
   ) {
     return true;
   }
@@ -82,7 +147,7 @@ let addEventHandlers = () => {
     if (
       (calcArrayIndex != 0 ||
         typeof calcArray[calcArrayIndex] != "undefined") &&
-      !currentArrayIndexIsOperator()
+      !currentArrayIndexIsOperator(calcArrayIndex)
     ) {
       calcString += " + ";
       renderCalcString();
@@ -95,7 +160,7 @@ let addEventHandlers = () => {
     if (
       (calcArrayIndex != 0 ||
         typeof calcArray[calcArrayIndex] != "undefined") &&
-      !currentArrayIndexIsOperator()
+      !currentArrayIndexIsOperator(calcArrayIndex)
     ) {
       calcString += " - ";
       renderCalcString();
@@ -108,7 +173,7 @@ let addEventHandlers = () => {
     if (
       (calcArrayIndex != 0 ||
         typeof calcArray[calcArrayIndex] != "undefined") &&
-      !currentArrayIndexIsOperator()
+      !currentArrayIndexIsOperator(calcArrayIndex)
     ) {
       calcString += " * ";
       renderCalcString();
@@ -121,7 +186,7 @@ let addEventHandlers = () => {
     if (
       (calcArrayIndex != 0 ||
         typeof calcArray[calcArrayIndex] != "undefined") &&
-      !currentArrayIndexIsOperator()
+      !currentArrayIndexIsOperator(calcArrayIndex)
     ) {
       calcString += " / ";
       renderCalcString();
@@ -134,7 +199,7 @@ let addEventHandlers = () => {
     if (
       (calcArrayIndex != 0 ||
         typeof calcArray[calcArrayIndex] != "undefined") &&
-      !currentArrayIndexIsOperator()
+      !currentArrayIndexIsOperator(calcArrayIndex)
     ) {
       calcString += " ^ ";
       renderCalcString();
@@ -147,7 +212,7 @@ let addEventHandlers = () => {
     if (
       (calcArrayIndex != 0 ||
         typeof calcArray[calcArrayIndex] != "undefined") &&
-      !currentArrayIndexIsOperator()
+      !currentArrayIndexIsOperator(calcArrayIndex)
     ) {
       calcString += " √ ";
       renderCalcString();
@@ -155,9 +220,12 @@ let addEventHandlers = () => {
       calcArray[calcArrayIndex] = "√";
     }
   });
+  document.getElementById("executeButton").addEventListener("click", () => {
+    executeCalc();
+  });
 
   document.getElementById("zeroButton").addEventListener("click", () => {
-    if (currentArrayIndexIsOperator()) {
+    if (currentArrayIndexIsOperator(calcArrayIndex)) {
       calcArrayIndex++;
     }
 
@@ -175,7 +243,7 @@ let addEventHandlers = () => {
   });
 
   document.getElementById("oneButton").addEventListener("click", () => {
-    if (currentArrayIndexIsOperator()) {
+    if (currentArrayIndexIsOperator(calcArrayIndex)) {
       calcArrayIndex++;
     }
 
@@ -194,7 +262,7 @@ let addEventHandlers = () => {
   });
 
   document.getElementById("twoButton").addEventListener("click", () => {
-    if (currentArrayIndexIsOperator()) {
+    if (currentArrayIndexIsOperator(calcArrayIndex)) {
       calcArrayIndex++;
     }
 
@@ -213,7 +281,7 @@ let addEventHandlers = () => {
   });
 
   document.getElementById("threeButton").addEventListener("click", () => {
-    if (currentArrayIndexIsOperator()) {
+    if (currentArrayIndexIsOperator(calcArrayIndex)) {
       calcArrayIndex++;
     }
 
@@ -232,7 +300,7 @@ let addEventHandlers = () => {
   });
 
   document.getElementById("fourButton").addEventListener("click", () => {
-    if (currentArrayIndexIsOperator()) {
+    if (currentArrayIndexIsOperator(calcArrayIndex)) {
       calcArrayIndex++;
     }
 
@@ -251,7 +319,7 @@ let addEventHandlers = () => {
   });
 
   document.getElementById("fiveButton").addEventListener("click", () => {
-    if (currentArrayIndexIsOperator()) {
+    if (currentArrayIndexIsOperator(calcArrayIndex)) {
       calcArrayIndex++;
     }
 
@@ -270,7 +338,7 @@ let addEventHandlers = () => {
   });
 
   document.getElementById("sixButton").addEventListener("click", () => {
-    if (currentArrayIndexIsOperator()) {
+    if (currentArrayIndexIsOperator(calcArrayIndex)) {
       calcArrayIndex++;
     }
 
@@ -289,7 +357,7 @@ let addEventHandlers = () => {
   });
 
   document.getElementById("sevenButton").addEventListener("click", () => {
-    if (currentArrayIndexIsOperator()) {
+    if (currentArrayIndexIsOperator(calcArrayIndex)) {
       calcArrayIndex++;
     }
 
@@ -308,7 +376,7 @@ let addEventHandlers = () => {
   });
 
   document.getElementById("eightButton").addEventListener("click", () => {
-    if (currentArrayIndexIsOperator()) {
+    if (currentArrayIndexIsOperator(calcArrayIndex)) {
       calcArrayIndex++;
     }
 
@@ -327,7 +395,7 @@ let addEventHandlers = () => {
   });
 
   document.getElementById("nineButton").addEventListener("click", () => {
-    if (currentArrayIndexIsOperator()) {
+    if (currentArrayIndexIsOperator(calcArrayIndex)) {
       calcArrayIndex++;
     }
 
