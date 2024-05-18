@@ -87,15 +87,14 @@ let executeCalc = () => {
   calcString = calcArray.toString();
   renderCalcString();
 };
-let renderCalcOutput = () => {
-  let output = executeCalc(getCalcString);
-  calcOutputWindow.textContent = output;
-};
 
 let renderCalcString = () => {
   calcOutputWindow.textContent = calcString;
 };
 
+let clearCalcString = () => {
+  calcString = "";
+};
 let currentArrayIndexIsOperator = (index) => {
   if (
     calcArray[index] == "+" ||
@@ -110,275 +109,65 @@ let currentArrayIndexIsOperator = (index) => {
   return false;
 };
 
+let addEventHandlerToOperationButton = (buttonId, symbol) => {
+  displayingOutput ? clearCalcString() : null;
+  document.getElementById(buttonId).addEventListener("click", () => {
+    if (
+      (calcArrayIndex != 0 ||
+        typeof calcArray[calcArrayIndex] != "undefined") &&
+      !currentArrayIndexIsOperator(calcArrayIndex)
+    ) {
+      calcString += ` ${symbol} `;
+      renderCalcString();
+      calcArrayIndex++;
+      calcArray[calcArrayIndex] = symbol;
+    }
+  });
+};
+
+let addEventHandlerToNumberButton = (buttonId, symbol) => {
+  displayingOutput ? clearCalcString() : null;
+  document.getElementById(buttonId).addEventListener("click", () => {
+    if (currentArrayIndexIsOperator(calcArrayIndex)) {
+      calcArrayIndex++;
+    }
+
+    if (typeof calcArray[calcArrayIndex] == "undefined") {
+      calcArray[calcArrayIndex] = "";
+    }
+
+    if (
+      calcArray[calcArrayIndex] == "" ||
+      !calcArray[calcArrayIndex].startsWith("0")
+    ) {
+      calcString += symbol;
+      renderCalcString();
+      calcArray[calcArrayIndex] += symbol;
+    }
+  });
+};
+
 let addEventHandlers = () => {
-  document.getElementById("addButton").addEventListener("click", () => {
-    if (
-      (calcArrayIndex != 0 ||
-        typeof calcArray[calcArrayIndex] != "undefined") &&
-      !currentArrayIndexIsOperator(calcArrayIndex)
-    ) {
-      calcString += " + ";
-      renderCalcString();
-      calcArrayIndex++;
-      calcArray[calcArrayIndex] = "+";
-    }
-  });
+  addEventHandlerToOperationButton("addButton", "+");
+  addEventHandlerToOperationButton("subtractButton", "-");
+  addEventHandlerToOperationButton("multiplyButton", "*");
+  addEventHandlerToOperationButton("divideButton", "/");
+  addEventHandlerToOperationButton("squareRootButton", "√");
+  addEventHandlerToOperationButton("exponentButton", "^");
 
-  document.getElementById("subtractButton").addEventListener("click", () => {
-    if (
-      (calcArrayIndex != 0 ||
-        typeof calcArray[calcArrayIndex] != "undefined") &&
-      !currentArrayIndexIsOperator(calcArrayIndex)
-    ) {
-      calcString += " - ";
-      renderCalcString();
-      calcArrayIndex++;
-      calcArray[calcArrayIndex] = "-";
-    }
-  });
+  addEventHandlerToNumberButton("zeroButton", "0");
+  addEventHandlerToNumberButton("oneButton", "1");
+  addEventHandlerToNumberButton("twoButton", "2");
+  addEventHandlerToNumberButton("threeButton", "3");
+  addEventHandlerToNumberButton("fourButton", "4");
+  addEventHandlerToNumberButton("fiveButton", "5");
+  addEventHandlerToNumberButton("sixButton", "6");
+  addEventHandlerToNumberButton("sevenButton", "7");
+  addEventHandlerToNumberButton("eightButton", "8");
+  addEventHandlerToNumberButton("nineButton", "9");
 
-  document.getElementById("multiplyButton").addEventListener("click", () => {
-    if (
-      (calcArrayIndex != 0 ||
-        typeof calcArray[calcArrayIndex] != "undefined") &&
-      !currentArrayIndexIsOperator(calcArrayIndex)
-    ) {
-      calcString += " * ";
-      renderCalcString();
-      calcArrayIndex++;
-      calcArray[calcArrayIndex] = "*";
-    }
-  });
-
-  document.getElementById("divideButton").addEventListener("click", () => {
-    if (
-      (calcArrayIndex != 0 ||
-        typeof calcArray[calcArrayIndex] != "undefined") &&
-      !currentArrayIndexIsOperator(calcArrayIndex)
-    ) {
-      calcString += " / ";
-      renderCalcString();
-      calcArrayIndex++;
-      calcArray[calcArrayIndex] = "/";
-    }
-  });
-
-  document.getElementById("exponentButton").addEventListener("click", () => {
-    if (
-      (calcArrayIndex != 0 ||
-        typeof calcArray[calcArrayIndex] != "undefined") &&
-      !currentArrayIndexIsOperator(calcArrayIndex)
-    ) {
-      calcString += " ^ ";
-      renderCalcString();
-      calcArrayIndex++;
-      calcArray[calcArrayIndex] = "^";
-    }
-  });
-
-  document.getElementById("squareRootButton").addEventListener("click", () => {
-    if (
-      (calcArrayIndex != 0 ||
-        typeof calcArray[calcArrayIndex] != "undefined") &&
-      !currentArrayIndexIsOperator(calcArrayIndex)
-    ) {
-      calcString += " √ ";
-      renderCalcString();
-      calcArrayIndex++;
-      calcArray[calcArrayIndex] = "√";
-    }
-  });
   document.getElementById("executeButton").addEventListener("click", () => {
     executeCalc();
-  });
-
-  document.getElementById("zeroButton").addEventListener("click", () => {
-    if (currentArrayIndexIsOperator(calcArrayIndex)) {
-      calcArrayIndex++;
-    }
-
-    if (typeof calcArray[calcArrayIndex] == "undefined") {
-      calcArray[calcArrayIndex] = "";
-    }
-    if (
-      calcArray[calcArrayIndex] == "" ||
-      !calcArray[calcArrayIndex].startsWith("0")
-    ) {
-      calcString += "0";
-      renderCalcString();
-      calcArray[calcArrayIndex] += "0";
-    }
-  });
-
-  document.getElementById("oneButton").addEventListener("click", () => {
-    if (currentArrayIndexIsOperator(calcArrayIndex)) {
-      calcArrayIndex++;
-    }
-
-    if (typeof calcArray[calcArrayIndex] == "undefined") {
-      calcArray[calcArrayIndex] = "";
-    }
-
-    if (
-      calcArray[calcArrayIndex] == "" ||
-      !calcArray[calcArrayIndex].startsWith("0")
-    ) {
-      calcString += "1";
-      renderCalcString();
-      calcArray[calcArrayIndex] += "1";
-    }
-  });
-
-  document.getElementById("twoButton").addEventListener("click", () => {
-    if (currentArrayIndexIsOperator(calcArrayIndex)) {
-      calcArrayIndex++;
-    }
-
-    if (typeof calcArray[calcArrayIndex] == "undefined") {
-      calcArray[calcArrayIndex] = "";
-    }
-
-    if (
-      calcArray[calcArrayIndex] == "" ||
-      !calcArray[calcArrayIndex].startsWith("0")
-    ) {
-      calcString += "2";
-      renderCalcString();
-      calcArray[calcArrayIndex] += "2";
-    }
-  });
-
-  document.getElementById("threeButton").addEventListener("click", () => {
-    if (currentArrayIndexIsOperator(calcArrayIndex)) {
-      calcArrayIndex++;
-    }
-
-    if (typeof calcArray[calcArrayIndex] == "undefined") {
-      calcArray[calcArrayIndex] = "";
-    }
-
-    if (
-      calcArray[calcArrayIndex] == "" ||
-      !calcArray[calcArrayIndex].startsWith("0")
-    ) {
-      calcString += "3";
-      renderCalcString();
-      calcArray[calcArrayIndex] += "3";
-    }
-  });
-
-  document.getElementById("fourButton").addEventListener("click", () => {
-    if (currentArrayIndexIsOperator(calcArrayIndex)) {
-      calcArrayIndex++;
-    }
-
-    if (typeof calcArray[calcArrayIndex] == "undefined") {
-      calcArray[calcArrayIndex] = "";
-    }
-
-    if (
-      calcArray[calcArrayIndex] == "" ||
-      !calcArray[calcArrayIndex].startsWith("0")
-    ) {
-      calcString += "4";
-      renderCalcString();
-      calcArray[calcArrayIndex] += "4";
-    }
-  });
-
-  document.getElementById("fiveButton").addEventListener("click", () => {
-    if (currentArrayIndexIsOperator(calcArrayIndex)) {
-      calcArrayIndex++;
-    }
-
-    if (typeof calcArray[calcArrayIndex] == "undefined") {
-      calcArray[calcArrayIndex] = "";
-    }
-
-    if (
-      calcArray[calcArrayIndex] == "" ||
-      !calcArray[calcArrayIndex].startsWith("0")
-    ) {
-      calcString += "5";
-      renderCalcString();
-      calcArray[calcArrayIndex] += "5";
-    }
-  });
-
-  document.getElementById("sixButton").addEventListener("click", () => {
-    if (currentArrayIndexIsOperator(calcArrayIndex)) {
-      calcArrayIndex++;
-    }
-
-    if (typeof calcArray[calcArrayIndex] == "undefined") {
-      calcArray[calcArrayIndex] = "";
-    }
-
-    if (
-      calcArray[calcArrayIndex] == "" ||
-      !calcArray[calcArrayIndex].startsWith("0")
-    ) {
-      calcString += "6";
-      renderCalcString();
-      calcArray[calcArrayIndex] += "6";
-    }
-  });
-
-  document.getElementById("sevenButton").addEventListener("click", () => {
-    if (currentArrayIndexIsOperator(calcArrayIndex)) {
-      calcArrayIndex++;
-    }
-
-    if (typeof calcArray[calcArrayIndex] == "undefined") {
-      calcArray[calcArrayIndex] = "";
-    }
-
-    if (
-      calcArray[calcArrayIndex] == "" ||
-      !calcArray[calcArrayIndex].startsWith("0")
-    ) {
-      calcString += "7";
-      renderCalcString();
-      calcArray[calcArrayIndex] += "7";
-    }
-  });
-
-  document.getElementById("eightButton").addEventListener("click", () => {
-    if (currentArrayIndexIsOperator(calcArrayIndex)) {
-      calcArrayIndex++;
-    }
-
-    if (typeof calcArray[calcArrayIndex] == "undefined") {
-      calcArray[calcArrayIndex] = "";
-    }
-
-    if (
-      calcArray[calcArrayIndex] == "" ||
-      !calcArray[calcArrayIndex].startsWith("0")
-    ) {
-      calcString += "8";
-      renderCalcString();
-      calcArray[calcArrayIndex] += "8";
-    }
-  });
-
-  document.getElementById("nineButton").addEventListener("click", () => {
-    if (currentArrayIndexIsOperator(calcArrayIndex)) {
-      calcArrayIndex++;
-    }
-
-    if (typeof calcArray[calcArrayIndex] == "undefined") {
-      calcArray[calcArrayIndex] = "";
-    }
-
-    if (
-      calcArray[calcArrayIndex] == "" ||
-      !calcArray[calcArrayIndex].startsWith("0")
-    ) {
-      calcString += "9";
-      renderCalcString();
-      calcArray[calcArrayIndex] += "9";
-    }
   });
 };
 
@@ -390,5 +179,6 @@ let calcArray = [];
 let calcArrayIndex = 0;
 let calcString = "";
 let calcOutputWindow = document.getElementsByTagName("output")[0];
+let displayingOutput = false;
 
 addEventHandlers();
