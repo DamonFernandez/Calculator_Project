@@ -10,8 +10,6 @@ let performOperation = (operationType, operandOne = 0, operandTwo = 0) => {
       return operandOne / operandTwo;
     case "^":
       return operandOne ** operandTwo;
-    case "√":
-      return Math.sqrt(operandOne);
     default:
       console.log("Invalid Operation Type");
       return "Invalid Operation Type";
@@ -19,10 +17,8 @@ let performOperation = (operationType, operandOne = 0, operandTwo = 0) => {
 };
 
 let rebuildCalcArray = (index, valueToAdd) => {
-  calcArray.splice(index, 3, valueToAdd);
+  calcArray.splice(index - 1, 3, valueToAdd);
 };
-// So the way to do this is have 1 big algorithm go over the calcString and execute operations as needed,
-// but the challenge is making it efficent and following order of operations
 
 let getCalcString = () => {
   let calcString = document.getElementsByTagName("output")[0];
@@ -38,45 +34,27 @@ let convertCalcArrayToNumbers = () => {
 };
 
 let bedmasLayerExecute = (symbolOneToCheckFor, symbolTwoToCheckFor) => {
-  if (symbolTwoToCheckFor != "√" && symbolOneToCheckFor != "√") {
-    for (let i = 0; i < calcArray.length; i++) {
-      if (
-        calcArray[i] == symbolOneToCheckFor ||
-        calcArray[i] == symbolTwoToCheckFor
-      ) {
-        resultOfOperation = performOperation(
-          calcArray[i],
-          calcArray[i - 1],
-          calcArray[i + 1]
-        );
-        rebuildCalcArray(calcArray[i], resultOfOperation);
-      }
-    }
-  } else if (symbolTwoToCheckFor == "√" || symbolOneToCheckFor == "√") {
-    for (let i = 0; i < calcArray.length; i++) {
-      if (calcArray[i] == "^") {
-        resultOfOperation = performOperation(
-          calcArray[i],
-          calcArray[i - 1],
-          calcArray[i + 1]
-        );
-        rebuildCalcArray(i, valueToAdd);
-      } else if (calcArray[i] == "√") {
-        resultOfOperation = performOperation(i, calcArray[i + 1]);
-        rebuildCalcArray(calcArray[i], resultOfOperation);
-      }
+  for (let i = 0; i < calcArray.length; i++) {
+    if (
+      calcArray[i] == symbolOneToCheckFor ||
+      calcArray[i] == symbolTwoToCheckFor
+    ) {
+      let resultOfOperation = performOperation(
+        calcArray[i],
+        calcArray[i - 1],
+        calcArray[i + 1]
+      );
+      rebuildCalcArray(i, resultOfOperation);
+      i = i - 1; // Adjust index after splice
     }
   }
 };
 
 let executeCalc = () => {
-  let resultOfOperation = 0;
-  // So we just do this in layers like how a human would
-
   convertCalcArrayToNumbers();
 
-  // Square root and exponents check
-  bedmasLayerExecute("√", "^");
+  // Exponents check
+  bedmasLayerExecute("^", "^");
 
   // Multiplication and division check
   bedmasLayerExecute("*", "/");
@@ -84,8 +62,9 @@ let executeCalc = () => {
   // Addition and subtraction check
   bedmasLayerExecute("+", "-");
 
-  calcString = calcArray.toString();
+  calcString = calcArray.join(" ");
   renderCalcString();
+  outputDisplayed = true;
 };
 
 let renderCalcString = () => {
@@ -95,14 +74,14 @@ let renderCalcString = () => {
 let clearCalcString = () => {
   calcString = "";
 };
+
 let currentArrayIndexIsOperator = (index) => {
   if (
     calcArray[index] == "+" ||
     calcArray[index] == "-" ||
     calcArray[index] == "/" ||
     calcArray[index] == "*" ||
-    calcArray[index] == "^" ||
-    calcArray[index] == "√"
+    calcArray[index] == "^"
   ) {
     return true;
   }
@@ -120,13 +99,20 @@ let addEventHandlerToOperationButton = (buttonId, symbol) => {
       renderCalcString();
       calcArrayIndex++;
       calcArray[calcArrayIndex] = symbol;
+      outputDisplayed = false;
     }
   });
 };
 
 let addEventHandlerToNumberButton = (buttonId, symbol) => {
-  // displayingOutput ? clearCalcString() : null;
   document.getElementById(buttonId).addEventListener("click", () => {
+    if (outputDisplayed) {
+      calcArray = [];
+      calcArrayIndex = 0;
+      calcString = "";
+      outputDisplayed = false;
+    }
+
     if (currentArrayIndexIsOperator(calcArrayIndex)) {
       calcArrayIndex++;
     }
@@ -151,7 +137,6 @@ let addEventHandlers = () => {
   addEventHandlerToOperationButton("subtractButton", "-");
   addEventHandlerToOperationButton("multiplyButton", "*");
   addEventHandlerToOperationButton("divideButton", "/");
-  addEventHandlerToOperationButton("squareRootButton", "√");
   addEventHandlerToOperationButton("exponentButton", "^");
 
   addEventHandlerToNumberButton("zeroButton", "0");
@@ -172,13 +157,12 @@ let addEventHandlers = () => {
 
 // Global:
 
-//Global Vars:
+// Global Vars:
 
 let calcArray = [];
 let calcArrayIndex = 0;
 let calcString = "";
 let calcOutputWindow = document.getElementsByTagName("output")[0];
+let outputDisplayed = false;
 
 addEventHandlers();
-
-// Bug: cant handle multiple operators yet
