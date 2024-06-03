@@ -93,7 +93,8 @@ let addEventHandlerToOperationButton = (buttonId, symbol) => {
     if (
       (calcArrayIndex != 0 ||
         typeof calcArray[calcArrayIndex] != "undefined") &&
-      !currentArrayIndexIsOperator(calcArrayIndex)
+      !currentArrayIndexIsOperator(calcArrayIndex) &&
+      !outputDisplayed
     ) {
       calcString += ` ${symbol} `;
       renderCalcString();
