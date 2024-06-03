@@ -1,10 +1,20 @@
-/* CSS HEX */
+/* Import Google Font  */
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+
 :root {
-  --rich-black: #0d1b2aff;
-  --oxford-blue: #1b263bff;
-  --yinmn-blue: #415a77ff;
-  --silver-lake-blue: #778da9ff;
-  --platinum: #e0e1ddff;
+  --smoky-black: rgb(49, 46, 45);
+  --jet: rgb(8, 8, 8);
+  --gray: rgb(186, 188, 192);
+  --dun: rgb(227, 214, 201);
+  --antiflash-white: #f3f3f4ff;
+}
+
+body {
+  background-color: var(--smoky-black);
+  font-family: "Roboto", system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+    sans-serif;
+  color: rgb(240, 237, 237);
 }
 
 section {
@@ -34,12 +44,20 @@ div > div > div {
 }
 
 button {
-  padding: 0.8em;
+  padding: 1em;
+  cursor: pointer;
+  background-color: var(--dun);
+  color: black;
+  border-radius: 1.5em;
+  border-style: solid;
+  border-width: 0.2em;
+  background-color: var(--dun);
+  font-weight: bold;
 }
 
 output {
   border-style: solid;
-  border-color: black;
+  border-color: var(--jet);
   width: 11em;
   height: 2em;
   text-align: center;
